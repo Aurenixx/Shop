@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Каталог товарів{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-4xl font-bold mb-4">{% if category %}{{ category.name }}{% else %}Каталог товарів{% endif %}</h1>
+
+<div class="sort-buttons flex flex-wrap gap-3 mb-6">
+    <a href="?sort=new" class="sort-btn px-4 py-2 bg-teal-100 hover:bg-teal-200 rounded">Нові</a>
+    <a href="?sort=old" class="sort-btn px-4 py-2 bg-teal-100 hover:bg-teal-200 rounded">Старі</a>
+    <a href="?sort=popular" class="sort-btn px-4 py-2 bg-teal-100 hover:bg-teal-200 rounded">Популярні</a>
+    <a href="?sort=price_low" class="sort-btn px-4 py-2 bg-teal-100 hover:bg-teal-200 rounded">Ціна ↑</a>
+    <a href="?sort=price_high" class="sort-btn px-4 py-2 bg-teal-100 hover:bg-teal-200 rounded">Ціна ↓</a>
+</div>
+
+<div class="products-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for product in products %}
+        <div class="product-card bg-white rounded-lg shadow-md p-5 hover:shadow-xl relative">
+            {% if product.featured %}
+                <div class="featured-badge absolute top-2 right-2 bg-yellow-400 text-white px-2 py-1 rounded text-sm font-bold">
+                    Рекомендований
+                </div>
+            {% endif %}
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="w-full h-48 object-cover rounded mb-4" alt="{{ product.name }}">
+            {% endif %}
+
+            <h2 class="text-2xl font-bold mb-1">{{ product.name }}</h2>
+            <p class="text-teal-600 font-semibold mb-2">{{ product.price }} грн</p>
+            <p class="text-gray-600 mb-3">{{ product.description|truncatewords:15 }}</p>
+            <div class="flex justify-between text-sm text-gray-500 mb-3">
+                <span>👁️ {{ product.views }}</span>
+                <span>📂 <a href="{{ product.category.get_absolute_url }}" class="hover:text-teal-600">{{ product.category.name }}</a></span>
+            </div>
+            <a href="{{ product.get_absolute_url }}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded">Деталі</a>
+        </div>
+    {% empty %}
+        <p>Товари відсутні</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+<header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-teal-600">Shop</h1>
+        <nav class="flex gap-4">
+            <a href="{% url 'main:product_list' %}" class="text-gray-700 hover:text-teal-600">Всі товари</a>
+            {% for cat in categories %}
+                <a href="{{ cat.get_absolute_url }}" class="text-gray-700 hover:text-teal-600">{{ cat.name }}</a>
+            {% endfor %}
+        </nav>
+    </div>
+</header>
+
+<main class="flex-1 container mx-auto px-4 py-8">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="bg-gray-800 text-white py-6 mt-auto">
+    <div class="container mx-auto text-center">
+        &copy; 2026 Shop. All rights reserved.
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+.sort-buttons .sort-btn {
+    transition: all 0.2s;
+}
+.products-grid, .related-grid {
+    display: grid;
+    gap: 20px;
+}
+.product-card {
+    transition: box-shadow 0.3s;
+}
+.product-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.featured-badge {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .products-grid, .related-grid {
+        grid-template-columns: 1fr;
+    }
+}
