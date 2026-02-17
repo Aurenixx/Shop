@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Реєстрація{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-16 p-6 bg-white rounded shadow">
+  <h1 class="text-2xl font-bold mb-4">Реєстрація нового користувача</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="text-red-500 mb-2">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <div class="mb-4">
+      <label for="id_username" class="block font-medium">Ім'я користувача</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <p class="text-red-500 text-sm">{{ form.username.errors.0 }}</p>
+      {% endif %}
+      {% if form.username.help_text %}
+        <p class="text-gray-500 text-sm">{{ form.username.help_text }}</p>
+      {% endif %}
+    </div>
+
+    <div class="mb-4">
+      <label for="id_password1" class="block font-medium">Пароль</label>
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <p class="text-red-500 text-sm">{{ form.password1.errors.0 }}</p>
+      {% endif %}
+      {% if form.password1.help_text %}
+        <p class="text-gray-500 text-sm">{{ form.password1.help_text }}</p>
+      {% endif %}
+    </div>
+
+    <div class="mb-4">
+      <label for="id_password2" class="block font-medium">Підтвердження паролю</label>
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <p class="text-red-500 text-sm">{{ form.password2.errors.0 }}</p>
+      {% endif %}
+      {% if form.password2.help_text %}
+        <p class="text-gray-500 text-sm">{{ form.password2.help_text }}</p>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+      Зареєструватися
+    </button>
+  </form>
+
+  <p class="mt-4 text-sm">
+    Вже є акаунт? <a href="{% url 'accounts:login' %}" class="text-blue-500 hover:underline">Увійти</a>
+  </p>
+</div>
+{% endblock %}

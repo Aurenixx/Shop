@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Профіль{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto mt-16 p-6 bg-white rounded shadow">
+  <h1 class="text-2xl font-bold mb-6">Профіль користувача</h1>
+
+  <ul class="mb-6 space-y-2">
+    <li><strong>Ім'я користувача:</strong> {{ user.username }}</li>
+    <li><strong>Email:</strong> {{ user.email|default:"Не вказано" }}</li>
+    <li><strong>Дата реєстрації:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</li>
+    <li><strong>Останній вхід:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</li>
+  </ul>
+
+  <div class="flex gap-4">
+    <a href="{% url 'main:product_list' %}" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded">Повернутися до товарів</a>
+    <a href="{% url 'accounts:logout' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Вийти</a>
+  </div>
+</div>
+{% endblock %}
