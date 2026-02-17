@@ -5,31 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Shop{% endblock %}</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
 
-<header class="bg-white shadow-md">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-teal-600">Shop</h1>
-        <nav class="flex gap-4">
-            <a href="{% url 'main:product_list' %}" class="text-gray-700 hover:text-teal-600">Всі товари</a>
-            {% for cat in categories %}
-                <a href="{{ cat.get_absolute_url }}" class="text-gray-700 hover:text-teal-600">{{ cat.name }}</a>
-            {% endfor %}
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<div class="flex flex-col min-h-screen">
+
+<header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold text-teal-600">
+                <a href="{% url 'main:product_list' %}">Shop</a>
+            </h1>
+        </div>
+
+        <nav class="mt-4">
+            <ul class="flex flex-wrap gap-4">
+                <li>
+                    <a href="{% url 'main:product_list' %}"
+                       class="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+                        Всі товари
+                    </a>
+                </li>
+
+                {% for cat in categories %}
+                    <li>
+                        <a href="{{ cat.get_absolute_url }}"
+                           class="text-gray-700 hover:text-teal-600 font-medium transition-colors">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </nav>
+
     </div>
 </header>
 
-<main class="flex-1 container mx-auto px-4 py-8">
+<main class="flex-1 container mx-auto px-4 py-8 pt-32">
     {% block content %}{% endblock %}
 </main>
 
 <footer class="bg-gray-800 text-white py-6 mt-auto">
-    <div class="container mx-auto text-center">
+    <div class="container mx-auto px-4 text-center">
         &copy; 2026 Shop. All rights reserved.
     </div>
 </footer>
 
+</div>
 </body>
 </html>

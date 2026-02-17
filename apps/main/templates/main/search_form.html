@@ -1,0 +1,27 @@
+<form method="get" class="mb-6">
+  <div class="flex gap-3">
+
+    <input
+      type="text"
+      name="q"
+      value="{{ request.GET.q }}"
+      placeholder="Пошук товарів..."
+      class="flex-1 px-4 py-2 border rounded-lg"
+    />
+
+    {% if request.GET.sort %}
+      <input type="hidden" name="sort" value="{{ request.GET.sort.q }}">
+    {% endif %}
+
+    <button type="submit"
+      class="px-5 py-2 bg-teal-600 text-white rounded-lg">
+      Пошук
+    </button>
+
+    <a href="{% url 'main:product_list' %}"
+       class="px-5 py-2 bg-gray-200 rounded-lg">
+       Скинути
+    </a>
+
+  </div>
+</form>
