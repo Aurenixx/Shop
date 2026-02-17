@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Product, Category
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 def product_list(request, category_slug=None):
     categories = Category.objects.filter(is_active=True)
@@ -9,6 +11,14 @@ def product_list(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug, is_active=True)
         products = products.filter(category=category)
+
+    search_query = request.GET.get("q")
+    if search_query:
+        products = products.filter(
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(category__name__icontains=search_query)
+        )
 
     sort_option = request.GET.get("sort", "new")
     if sort_option == "new":
@@ -26,13 +36,25 @@ def product_list(request, category_slug=None):
     else:
         products = products.order_by("-created_at")
 
+    paginator = Paginator(products, 6)
+
+    page_number = request.GET.get('page')
+    try:
+        products = paginator.page(page_number)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
     context = {
         "products": products,
         "categories": categories,
         "category": category,
-        "current_sort": sort_option
+        "current_sort": sort_option,
+        "search_query": search_query, 
     }
-    return render(request, "main/product-list.html", context)
+    return render(request, "main/product_list.html", context)
+
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, is_available=True)
@@ -49,4 +71,4 @@ def product_detail(request, id, slug):
         "product": product,
         "related_products": related_products
     }
-    return render(request, "main/product-detail.html", context)
+    return render(request, "main/product_details.html", context)

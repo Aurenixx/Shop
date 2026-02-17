@@ -1,0 +1,10 @@
+<div class="flex flex-wrap gap-3">
+
+  <a href="?sort=new{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Спочатку нові</a>
+  <a href="?sort=old{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Спочатку старі</a>
+  <a href="?sort=popular{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Популярні</a>
+  <a href="?sort=price_low{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ціна ↑</a>
+  <a href="?sort=price_high{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Ціна ↓</a>
+  <a href="?sort=name{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Назва</a>
+
+</div>

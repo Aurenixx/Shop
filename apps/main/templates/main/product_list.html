@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+
+{% block title %}
+{% if search_query %}
+Пошук: {{ search_query }}
+{% elif category %}
+{{ category.name }}
+{% else %}
+Каталог товарів
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% include "main/search_form.html" %}
+
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-4xl font-bold text-gray-800">
+      {% if search_query %}
+        Результати пошуку
+      {% elif category %}
+        {{ category.name }}
+      {% else %}
+        Каталог товарів
+      {% endif %}
+    </h1>
+
+    {% include "main/components/sort_buttons.html" %}
+  </div>
+</div>
+
+<div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">Популярні товари</h2>
+    {% show_popular_products 4 %}
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for product in products %}
+      {% show_product_card product %}
+  {% empty %}
+      <div class="col-span-full">
+          <p class="text-center text-gray-500 text-lg py-12">
+              Товари не знайдено.
+          </p>
+      </div>
+  {% endfor %}
+</div>
+
+{% include "main/pagination.html" %}
+
+{% endblock %}

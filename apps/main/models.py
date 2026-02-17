@@ -24,7 +24,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True, verbose_name="Слаг")
     description = models.TextField(verbose_name="Опис", blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Ціна")
-    image = models.ImageField(upload_to="products/%Y/%m/%d", blank=True, verbose_name="Зображення")
+    image = models.ImageField(upload_to="products/", blank=True, verbose_name="Зображення")
     views = models.IntegerField(default=0, verbose_name="Перегляди")
     featured = models.BooleanField(default=False, verbose_name="Рекомендований")
     is_available = models.BooleanField(default=True, verbose_name="В наявності")

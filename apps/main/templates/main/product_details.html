@@ -8,8 +8,8 @@
     <h1 class="text-4xl font-bold mb-4">{{ product.name }}</h1>
     <div class="flex gap-4 text-sm text-gray-500 mb-6">
         <span>📂 <a href="{{ product.category.get_absolute_url }}" class="text-teal-600 hover:text-teal-700">{{ product.category.name }}</a></span>
-        <span>👁️ {{ product.views }}</span>
-        <span>📅 {{ product.updated_at|date:"d.m.Y" }}</span>
+        <span>👁️ {{ product.views|compact_number }}</span>
+        <span>📅 {{ product.updated_at|time_ago }}</span>
     </div>
 
     {% if product.image %}
@@ -29,14 +29,7 @@
     <h2 class="text-3xl font-bold mb-4">Схожі товари</h2>
     <div class="related-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {% for p in related_products %}
-            <div class="product-card bg-white rounded-lg shadow-md p-4">
-                {% if p.image %}
-                    <img src="{{ p.image.url }}" class="w-full h-40 object-cover rounded mb-2" alt="{{ p.name }}">
-                {% endif %}
-                <h3 class="font-bold">{{ p.name }}</h3>
-                <p class="text-teal-600 font-semibold">{{ p.price }} грн</p>
-                <a href="{{ p.get_absolute_url }}" class="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1 rounded text-sm inline-block mt-2">Деталі</a>
-            </div>
+            {% show_product_card p %}
         {% endfor %}
     </div>
 </section>
