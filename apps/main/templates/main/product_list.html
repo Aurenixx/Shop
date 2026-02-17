@@ -13,6 +13,8 @@
 
 {% block content %}
 
+{% block content %}
+>>>>>>> 41b9b8607ca0c0b791779a6c655b384bdced5bcb
 {% include "main/search_form.html" %}
 
 <div class="mb-8">
@@ -46,6 +48,34 @@
           </p>
       </div>
   {% endfor %}
+  {% if search_query %}
+    Результати пошуку
+  {% elif category %}
+    {{ category.name }}
+  {% else %}
+    Каталог товарів
+  {% endif %}
+</h1>
+{% include "main/components/sort_buttons.html" %}
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+  {% for product in products %}
+    {% include "main/components/product_card.html" %}
+{% empty %}
+<div class="col-span-full">
+  <p class="text-center text-gray-500 text-lg py-12">
+    {% if search_query %}
+      Нічого не знайдено за запитом "{{ search_query }}"
+    {% else %}
+      Товари не знайдено.
+    {% endif %}
+  </p>
+</div>
+{% endfor %}
+
+
 </div>
 
 {% include "main/pagination.html" %}

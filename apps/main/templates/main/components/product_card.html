@@ -1,3 +1,4 @@
+
 {% load shop_tags %}
 {% load shop_filters %}
 
@@ -20,6 +21,7 @@
 
     <p class="text-teal-600 font-semibold mb-3">
       {{ product.price|currency }}
+      {{ product.price }} грн
     </p>
 
     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -28,6 +30,7 @@
 
     <div class="flex justify-between text-sm text-gray-500 mb-4">
       <span>👁️ {{ product.views|compact_number }}</span>
+      <span>👁️ {{ product.views }}</span>
       <span>
         📂 
         <a href="{{ product.category.get_absolute_url }}" class="hover:text-teal-600">
