@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-3xl mx-auto py-10">
+    <h2 class="text-2xl font-bold mb-6">Залишити відгук</h2>
+
+    <form method="post" class="space-y-6 bg-white p-6 rounded-lg shadow">
+        {% csrf_token %}
+        <div>
+            <label class="block font-semibold mb-2">Оцінка</label>
+            <div class="flex space-x-4">
+                {{ form.rating }}
+            </div>
+            {% if form.rating.errors %}
+                <p class="text-red-500 text-sm">{{ form.rating.errors.0 }}</p>
+            {% endif %}
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">Заголовок</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <p class="text-red-500 text-sm">{{ form.title.errors.0 }}</p>
+            {% endif %}
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">Відгук</label>
+            {{ form.content }}
+            {% if form.content.errors %}
+                <p class="text-red-500 text-sm">{{ form.content.errors.0 }}</p>
+            {% endif %}
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">Переваги</label>
+            {{ form.advantages }}
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">Недоліки</label>
+            {{ form.disadvantages }}
+        </div>
+        <div class="flex justify-between pt-4">
+            <a href="{{ product.get_absolute_url }}"
+               class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                Скасувати
+            </a>
+
+            <button type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Опублікувати
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

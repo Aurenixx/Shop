@@ -1,11 +1,12 @@
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-mjmym@)ovo2t_u*^#^a!2(40$gv29uie7z(hg75^rsm96$2&mi'
+SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -19,7 +20,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.main'
+    'apps.main',
+    'apps.accounts',
+    'apps.contact',
+    'apps.reviews'
 ]
 
 MIDDLEWARE = [
@@ -30,6 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.accounts.views.AdminAccessRedirectMiddleware'
     
 ]
 
@@ -108,3 +113,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'main:product_list'
+LOGOUT_REDIRECT_URL = 'main:product_list'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'noreply@shop.com'
+CONTACT_EMAIL = 'admin@shop.com'

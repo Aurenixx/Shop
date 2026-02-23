@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.db.models import Avg, Count
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Назва категорії")
@@ -35,6 +36,21 @@ class Product(models.Model):
         ordering = ["-created_at"]
         verbose_name = "Товар"
         verbose_name_plural = "Товари"
+
+    def get_average_rating(self):
+        return self.reviews.filter(is_active=True).aggregate(avg=Avg('rating'))['avg'] or 0
+
+    def get_reviews_count(self):
+        return self.reviews.filter(is_active=True).count()
+
+    def get_rating_distribution(self):
+        distribution = {i: 0 for i in range(1, 6)}
+        ratings = self.reviews.filter(is_active=True).values('rating').annotate(
+            count=Count('rating')
+        )
+        for item in ratings:
+            distribution[item['rating']] = item['count']
+        return distribution
 
     def __str__(self):
         return self.name

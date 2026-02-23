@@ -1,0 +1,105 @@
+<div class="mt-16 border-t pt-10">
+
+  <h2 class="text-2xl font-bold mb-6">Відгуки ({{ reviews_count }})</h2>
+
+  <div class="grid md:grid-cols-2 gap-10 mb-10">
+
+    <div class="flex flex-col items-center justify-center">
+      <div class="text-4xl font-bold">{{ average_rating|floatformat:1 }}/5</div>
+      <div class="text-yellow-400 text-xl mt-2">
+        {% for i in "12345" %}
+          {% if forloop.counter <= average_rating %}
+            ⭐
+          {% else %}
+            ☆
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="space-y-2">
+        {% for star, data in rating_distribution.items %}
+            <div class="flex items-center space-x-2">
+                <span class="w-12 text-sm">{{ star }} ⭐</span>
+                <div class="flex-1 bg-gray-200 rounded h-3">
+                    <div class="bg-yellow-400 h-3 rounded" style="width: {{ data.percent }}%"></div>
+                </div>
+                <span class="text-sm">{{ data.count }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+  </div>
+
+  {% if user.is_authenticated and not user_review %}
+    <a href="{% url 'reviews:add_review' product.id %}"
+       class="inline-block mb-8 px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      Залишити відгук
+    </a>
+  {% endif %}
+
+  <div class="space-y-8">
+    {% for review in reviews %}
+      <div class="bg-white p-6 rounded-lg shadow">
+
+        <div class="flex justify-between items-center mb-2">
+          <div class="flex items-center space-x-3">
+            <img src="https://www.gravatar.com/avatar/{{ review.author.email }}?s=40&d=identicon"
+                 class="w-10 h-10 rounded-full" alt="Avatar">
+            <div>
+              <p class="font-semibold">{{ review.author.username }}</p>
+              <p class="text-yellow-400">{{ review.get_rating_display_stars }}</p>
+            </div>
+          </div>
+
+          <div class="text-sm text-gray-500">
+            {{ review.created_at|date:"d.m.Y" }}
+          </div>
+        </div>
+
+        <h3 class="font-bold text-lg mb-2">{{ review.title }}</h3>
+
+        <p class="mb-4 text-gray-700">{{ review.content }}</p>
+
+        {% if review.advantages %}
+          <div class="text-green-600 mb-2">
+            <strong>Переваги:</strong> {{ review.advantages }}
+          </div>
+        {% endif %}
+
+        {% if review.disadvantages %}
+          <div class="text-red-600 mb-2">
+            <strong>Недоліки:</strong> {{ review.disadvantages }}
+          </div>
+        {% endif %}
+
+        <div class="flex justify-between items-center mt-4">
+
+          <a href="{% url 'reviews:mark_helpful' review.id %}"
+             class="text-sm text-gray-600 hover:text-black flex items-center space-x-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M14 9l-2 2m0 0l-2-2m2 2V3m0 12v6"/>
+            </svg>
+            <span>Корисно ({{ review.helpful_count }})</span>
+          </a>
+
+          {% if user == review.author or user.is_staff %}
+            <div class="space-x-3 text-sm">
+              <a href="{% url 'reviews:edit_review' review.id %}" class="text-blue-600 hover:underline">
+                Редагувати
+              </a>
+              <a href="{% url 'reviews:delete_review' review.id %}" class="text-red-600 hover:underline">
+                Видалити
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+    {% empty %}
+      <p class="text-gray-500">Поки що немає відгуків. Будьте першим!</p>
+    {% endfor %}
+  </div>
+
+</div>

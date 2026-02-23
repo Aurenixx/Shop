@@ -3,7 +3,8 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-
+{% load shop_filters %}
+{% load shop_tags %}
 <article class="product-detail bg-white rounded-lg shadow-lg p-8 mb-8">
     <h1 class="text-4xl font-bold mb-4">{{ product.name }}</h1>
     <div class="flex gap-4 text-sm text-gray-500 mb-6">
@@ -35,4 +36,5 @@
 </section>
 {% endif %}
 
+{% include 'reviews/review_list.html' %}
 {% endblock %}
